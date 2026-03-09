@@ -1,0 +1,73 @@
+<div class="max-w-6xl mx-auto space-y-8 h-full flex flex-col pt-8 px-8">
+  <!-- Page Title -->
+  <div class="shrink-0">
+    <h1 class="text-2xl font-bold tracking-tight">Panel de Prospectos de Instagram</h1>
+    <p class="text-slate-500 mt-1">Monitoriza y responde a prospectos de alta intención en tiempo real.</p>
+  </div>
+
+  <!-- Top Metrics -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 shrink-0">
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-4">
+        <span class="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 rounded-lg">
+          <span class="material-symbols-outlined">person_add</span>
+        </span>
+        <span class="text-[10px] font-bold text-slate-500 bg-slate-50 dark:bg-slate-800/20 px-2 py-1 rounded-full">Hoy</span>
+      </div>
+      <p class="text-sm text-slate-500 font-medium">Total Prospectos</p>
+      <h3 class="text-3xl font-bold mt-1">0</h3>
+    </div>
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-4">
+        <span class="p-2 bg-orange-50 dark:bg-orange-900/20 text-orange-600 rounded-lg">
+          <span class="material-symbols-outlined">local_fire_department</span>
+        </span>
+        <span class="text-[10px] font-bold text-slate-500 bg-slate-50 dark:bg-slate-800/20 px-2 py-1 rounded-full">Pendientes</span>
+      </div>
+      <p class="text-sm text-slate-500 font-medium">Prospectos Calientes</p>
+      <h3 class="text-3xl font-bold mt-1">0</h3>
+    </div>
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-4">
+        <span class="p-2 bg-purple-50 dark:bg-purple-900/20 text-purple-600 rounded-lg">
+          <span class="material-symbols-outlined">bolt</span>
+        </span>
+        <span class="text-[10px] font-bold text-slate-500 bg-slate-50 dark:bg-slate-800/20 px-2 py-1 rounded-full">Semanal</span>
+      </div>
+      <p class="text-sm text-slate-500 font-medium">Tasa Conversión IA</p>
+      <h3 class="text-3xl font-bold mt-1">0.0%</h3>
+    </div>
+  </div>
+
+  <!-- Data Table Filter Bar & Main Content Row -->
+  <div class="flex-1 flex flex-col min-h-0 pt-4 border-t border-slate-200 dark:border-slate-800 pb-8 relative">
+    
+    <!-- Filters Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 shrink-0">
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+        <button class="px-4 py-1.5 text-sm font-medium bg-primary text-white rounded-lg shadow-sm whitespace-nowrap">Todos</button>
+        <button class="px-4 py-1.5 text-sm font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 whitespace-nowrap">Calientes</button>
+        <button class="px-4 py-1.5 text-sm font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 whitespace-nowrap">Requieren Acción</button>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+          <span class="material-symbols-outlined">filter_list</span>
+        </button>
+        <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+          <span class="material-symbols-outlined">sort</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Component Container -->
+    <app-leads-table class="flex-1 min-h-0" (rowClick)="openDrawer($event)"></app-leads-table>
+
+    <!-- Overlay Layer for Drawer (Conditional) -->
+    <!-- TODO: Add ngIf for selectedLead -->
+    @if(selectedLead) {
+      <div class="fixed inset-0 bg-slate-900/20 backdrop-blur-[1px] z-20 transition-opacity" (click)="closeDrawer()"></div>
+      <app-lead-drawer class="fixed inset-y-0 right-0 w-[480px] z-30 shadow-2xl transition-transform" [lead]="selectedLead" (close)="closeDrawer()"></app-lead-drawer>
+    }
+
+  </div>
+</div>

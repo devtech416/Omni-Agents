@@ -1,0 +1,97 @@
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col h-full">
+  <div class="overflow-y-auto flex-1">
+    <table class="w-full text-left border-collapse relative">
+      <thead class="sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur z-10">
+        <tr class="border-b border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
+          <th class="px-6 py-4 font-semibold">Perfil de Usuario</th>
+          <th class="px-6 py-4 font-semibold">Último Mensaje</th>
+          <th class="px-6 py-4 font-semibold">Estado</th>
+          <th class="px-6 py-4 font-semibold text-right">Última Interacción</th>
+          <th class="px-6 py-4 font-semibold text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-50 dark:divide-slate-800">
+        
+        @if(isLoading) {
+          <tr>
+            <td colspan="5" class="px-6 py-8 text-center text-slate-500">
+              <span class="material-symbols-outlined animate-spin text-primary">autorenew</span>
+              <p class="text-sm mt-2">Cargando leads del Agente...</p>
+            </td>
+          </tr>
+        } @else {
+          @for(lead of leads; track lead.id) {
+            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer" (click)="onRowClick(lead)">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <div class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs ring-1 ring-slate-200">
+                    {{ lead.fullName ? lead.fullName.substring(0,2).toUpperCase() : lead.instagramHandle.substring(0,2).toUpperCase() }}
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">@{{ lead.instagramHandle }}</p>
+                    <p class="text-[11px] text-slate-400">{{ lead.fullName || 'Usuario Desconocido' }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 max-w-xs">
+                <p class="text-sm text-slate-600 dark:text-slate-300 truncate">
+                  "{{ lead.aiSummary || 'Esperando procesamiento de IA...' }}"
+                </p>
+              </td>
+              <td class="px-6 py-4">
+                @if(lead.status === 'NEW' || lead.priorityScore >= 80) {
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-orange-100/50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800">
+                    <span class="material-symbols-outlined text-sm leading-none">local_fire_department</span>
+                    CALIENTE
+                  </span>
+                } @else if(lead.status === 'CONTACTED') {
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-100/50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800">
+                    <span class="material-symbols-outlined text-sm leading-none">thermostat</span>
+                    TEMPLADO
+                  </span>
+                } @else {
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100/50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                    <span class="material-symbols-outlined text-sm leading-none">ac_unit</span>
+                    FRÍO
+                  </span>
+                }
+              </td>
+              <td class="px-6 py-4 text-right whitespace-nowrap">
+                <span class="text-xs text-slate-500 font-medium whitespace-nowrap">
+                  {{ lead.updatedAt | date:'shortTime' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button class="text-slate-400 hover:text-primary dark:hover:text-white p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800" (click)="$event.stopPropagation()">
+                  <span class="material-symbols-outlined">more_horiz</span>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <!-- Empty State -->
+            <tr>
+              <td colspan="5" class="py-12">
+                <div class="flex flex-col items-center justify-center text-center">
+                  <div class="size-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                    <span class="material-symbols-outlined text-slate-400 text-3xl">inbox</span>
+                  </div>
+                  <h3 class="text-slate-900 dark:text-white font-bold mb-1">No hay leads todavía</h3>
+                  <p class="text-slate-500 text-sm max-w-xs">Conecta tu cuenta de Instagram o espera a que entren nuevos mensajes para verlos aquí.</p>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Pagination Footer -->
+  <div class="p-4 bg-slate-50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between shrink-0">
+    <p class="text-xs font-medium text-slate-500">Mostrando 0 de 0 prospectos</p>
+    <div class="flex items-center gap-2">
+      <button class="px-3 py-1.5 text-xs font-semibold border border-slate-200 dark:border-slate-700 rounded-md bg-white dark:bg-slate-800 text-slate-400 cursor-not-allowed shadow-sm" disabled>Anterior</button>
+      <button class="px-3 py-1.5 text-xs font-semibold border border-slate-200 dark:border-slate-700 rounded-md bg-white dark:bg-slate-800 text-slate-400 cursor-not-allowed shadow-sm" disabled>Siguiente</button>
+    </div>
+  </div>
+</div>
