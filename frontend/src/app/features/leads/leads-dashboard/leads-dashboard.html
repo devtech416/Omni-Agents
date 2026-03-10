@@ -15,7 +15,7 @@
         <span class="text-[10px] font-bold text-slate-500 bg-slate-50 dark:bg-slate-800/20 px-2 py-1 rounded-full">Hoy</span>
       </div>
       <p class="text-sm text-slate-500 font-medium">Total Prospectos</p>
-      <h3 class="text-3xl font-bold mt-1">0</h3>
+      <h3 class="text-3xl font-bold mt-1">{{ totalLeads }}</h3>
     </div>
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
       <div class="flex justify-between items-start mb-4">
@@ -25,7 +25,7 @@
         <span class="text-[10px] font-bold text-slate-500 bg-slate-50 dark:bg-slate-800/20 px-2 py-1 rounded-full">Pendientes</span>
       </div>
       <p class="text-sm text-slate-500 font-medium">Prospectos Calientes</p>
-      <h3 class="text-3xl font-bold mt-1">0</h3>
+      <h3 class="text-3xl font-bold mt-1">{{ hotLeads }}</h3>
     </div>
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
       <div class="flex justify-between items-start mb-4">
@@ -35,7 +35,7 @@
         <span class="text-[10px] font-bold text-slate-500 bg-slate-50 dark:bg-slate-800/20 px-2 py-1 rounded-full">Semanal</span>
       </div>
       <p class="text-sm text-slate-500 font-medium">Tasa Conversión IA</p>
-      <h3 class="text-3xl font-bold mt-1">0.0%</h3>
+      <h3 class="text-3xl font-bold mt-1">{{ conversionRate | number:'1.1-1' }}%</h3>
     </div>
   </div>
 
@@ -60,7 +60,7 @@
     </div>
 
     <!-- Table Component Container -->
-    <app-leads-table class="flex-1 min-h-0" (rowClick)="openDrawer($event)"></app-leads-table>
+    <app-leads-table class="flex-1 min-h-0" (rowClick)="openDrawer($event)" (dataLoaded)="onDataLoaded($event)"></app-leads-table>
 
     <!-- Overlay Layer for Drawer (Conditional) -->
     <!-- TODO: Add ngIf for selectedLead -->

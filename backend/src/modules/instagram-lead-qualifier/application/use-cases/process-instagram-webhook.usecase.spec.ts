@@ -1,7 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProcessInstagramWebhookUseCase } from './process-instagram-webhook.usecase';
-import { CRM_REPOSITORY_PORT, ICrmRepositoryPort } from '../../domain/ports/crm-repository.port';
-import { ILeadAnalyzerPort, LEAD_ANALYZER_PORT } from '../../domain/ports/lead-analyzer.port';
+import {
+  CRM_REPOSITORY_PORT,
+  ICrmRepositoryPort,
+} from '../../domain/ports/crm-repository.port';
+import {
+  ILeadAnalyzerPort,
+  LEAD_ANALYZER_PORT,
+} from '../../domain/ports/lead-analyzer.port';
 import { InstagramWebhookPayloadDto } from '../dtos/webhook-payload.dto';
 import { LeadEntity } from '../../domain/entities/lead.entity';
 
@@ -31,7 +37,9 @@ describe('ProcessInstagramWebhookUseCase', () => {
       ],
     }).compile();
 
-    useCase = module.get<ProcessInstagramWebhookUseCase>(ProcessInstagramWebhookUseCase);
+    useCase = module.get<ProcessInstagramWebhookUseCase>(
+      ProcessInstagramWebhookUseCase,
+    );
     crmRepository = module.get(CRM_REPOSITORY_PORT);
     leadAnalyzer = module.get(LEAD_ANALYZER_PORT);
   });
@@ -67,11 +75,15 @@ describe('ProcessInstagramWebhookUseCase', () => {
 
     await useCase.execute(mockPayload);
 
-    expect(crmRepository.findByInstagramHandle).toHaveBeenCalledWith('user_123');
+    expect(crmRepository.findByInstagramHandle).toHaveBeenCalledWith(
+      'user_123',
+    );
     expect(crmRepository.saveLead).toHaveBeenCalled();
     expect(crmRepository.saveMessage).toHaveBeenCalled();
-    expect(leadAnalyzer.analyzeLeadIntent).toHaveBeenCalledWith(['Hello, I want to buy your product!']);
-    
+    expect(leadAnalyzer.analyzeLeadIntent).toHaveBeenCalledWith([
+      'Hello, I want to buy your product!',
+    ]);
+
     const savedLeadInfo = crmRepository.saveLead.mock.calls[0][0];
     expect(savedLeadInfo.priorityScore).toBe(90);
     expect(savedLeadInfo.aiSummary).toBe('Wants to buy product');
@@ -88,10 +100,12 @@ describe('ProcessInstagramWebhookUseCase', () => {
 
     await useCase.execute(mockPayload);
 
-    expect(crmRepository.findByInstagramHandle).toHaveBeenCalledWith('user_123');
+    expect(crmRepository.findByInstagramHandle).toHaveBeenCalledWith(
+      'user_123',
+    );
     expect(crmRepository.saveLead).toHaveBeenCalled(); // Update
     expect(crmRepository.saveMessage).toHaveBeenCalled();
-    
+
     const updatedLeadInfo = crmRepository.saveLead.mock.calls[0][0];
     expect(updatedLeadInfo.priorityScore).toBe(50);
     expect(updatedLeadInfo.aiSummary).toBe('Asking for more info');

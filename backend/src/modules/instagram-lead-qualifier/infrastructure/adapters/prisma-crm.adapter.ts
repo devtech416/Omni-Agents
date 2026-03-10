@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 import { ICrmRepositoryPort } from '../../domain/ports/crm-repository.port';
 import { LeadEntity } from '../../domain/entities/lead.entity';
 import { InstagramMessageEntity } from '../../domain/entities/instagram-message.entity';
+import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class PrismaCrmAdapter implements ICrmRepositoryPort {
-  private readonly prisma = new PrismaClient();
+  constructor(private readonly prisma: PrismaService) {}
 
   async findByInstagramHandle(handle: string): Promise<LeadEntity | null> {
-    const data = await this.prisma.lead.findUnique({
+    const data = await this.prisma.client.lead.findUnique({
       where: { instagramHandle: handle },
     });
 
@@ -28,7 +28,7 @@ export class PrismaCrmAdapter implements ICrmRepositoryPort {
   }
 
   async saveLead(lead: LeadEntity): Promise<void> {
-    await this.prisma.lead.upsert({
+    await this.prisma.client.lead.upsert({
       where: { id: lead.id },
       update: {
         instagramHandle: lead.instagramHandle,
@@ -52,7 +52,7 @@ export class PrismaCrmAdapter implements ICrmRepositoryPort {
   }
 
   async saveMessage(message: InstagramMessageEntity): Promise<void> {
-    await this.prisma.instagramMessage.create({
+    await this.prisma.client.instagramMessage.create({
       data: {
         id: message.id,
         leadId: message.leadId,

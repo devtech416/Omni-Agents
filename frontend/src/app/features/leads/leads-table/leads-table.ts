@@ -11,6 +11,7 @@ import { LeadsService, LeadResponse } from '../../../core/services/leads.service
 })
 export class LeadsTableComponent implements OnInit {
   @Output() rowClick = new EventEmitter<LeadResponse>();
+  @Output() dataLoaded = new EventEmitter<LeadResponse[]>();
   private leadsService = inject(LeadsService);
   private cdr = inject(ChangeDetectorRef);
   
@@ -22,6 +23,8 @@ export class LeadsTableComponent implements OnInit {
       next: (data) => {
         this.leads = data;
         this.isLoading = false;
+        this.dataLoaded.emit(data);
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to fetch leads:', err);
@@ -34,6 +37,22 @@ export class LeadsTableComponent implements OnInit {
 
   onRowClick(lead: LeadResponse) {
     this.rowClick.emit(lead);
+  }
+
+  deleteLead(event: Event, id: string) {
+    event.stopPropagation();
+    if (confirm('¿Estás seguro de que quieres eliminar este prospecto?')) {
+      this.leadsService.deleteLead(id).subscribe({
+        next: () => {
+          this.leads = this.leads.filter(l => l.id !== id);
+          this.dataLoaded.emit(this.leads);
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error deleting lead', err);
+        }
+      });
+    }
   }
 }
 

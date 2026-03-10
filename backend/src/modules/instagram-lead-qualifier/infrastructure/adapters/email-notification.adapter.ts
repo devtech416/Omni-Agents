@@ -9,6 +9,7 @@ export class EmailNotificationAdapter implements NotificationServicePort {
   // eslint-disable-next-line @typescript-eslint/require-await
   async notifyHotLead(lead: LeadEntity): Promise<void> {
     // Here we'd integrate SendGrid, Resend, or a Slack/Telegram bot
+    // eslint-disable-next-line prettier/prettier
     this.logger.warn(`🚀 [HOT LEAD DETECTED] notifying sales team about Insta ID: ${lead.instagramHandle}`);
   }
 }

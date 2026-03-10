@@ -18,9 +18,13 @@ export interface LeadResponse {
 })
 export class LeadsService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3014/leads';
+  private apiUrl = 'http://localhost:3014/api/webhooks/instagram/leads';
 
   getLeads(): Observable<LeadResponse[]> {
     return this.http.get<LeadResponse[]>(this.apiUrl);
+  }
+
+  deleteLead(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

@@ -12,7 +12,10 @@ import { LeadResponse } from '../../../core/services/leads.service';
   styleUrl: './leads-dashboard.css'
 })
 export class LeadsDashboardComponent {
-  selectedLead: LeadResponse | null = null; 
+  selectedLead: LeadResponse | null = null;
+  totalLeads = 0;
+  hotLeads = 0;
+  conversionRate = 0;
 
   openDrawer(lead: LeadResponse) {
     this.selectedLead = lead;
@@ -20,5 +23,11 @@ export class LeadsDashboardComponent {
 
   closeDrawer() {
     this.selectedLead = null;
+  }
+
+  onDataLoaded(leads: LeadResponse[]) {
+    this.totalLeads = leads.length;
+    this.hotLeads = leads.filter(l => l.status === 'NEW' || l.priorityScore >= 80).length;
+    this.conversionRate = this.totalLeads > 0 ? (leads.filter(l => l.status === 'CONVERTED').length / this.totalLeads) * 100 : 0;
   }
 }

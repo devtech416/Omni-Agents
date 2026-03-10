@@ -8,7 +8,11 @@ export class InstagramMessageEntity {
     public timestamp: Date,
   ) {}
 
-  static createInbound(leadId: string, senderId: string, text: string): InstagramMessageEntity {
+  static createInbound(
+    leadId: string,
+    senderId: string,
+    text: string,
+  ): InstagramMessageEntity {
     return new InstagramMessageEntity(
       crypto.randomUUID(),
       leadId,

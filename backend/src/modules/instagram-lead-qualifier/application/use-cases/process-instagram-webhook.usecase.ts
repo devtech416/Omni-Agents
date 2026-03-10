@@ -1,7 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InstagramWebhookPayloadDto } from '../dtos/webhook-payload.dto';
-import { CRM_REPOSITORY_PORT, ICrmRepositoryPort } from '../../domain/ports/crm-repository.port';
-import { ILeadAnalyzerPort, LEAD_ANALYZER_PORT } from '../../domain/ports/lead-analyzer.port';
+import {
+  CRM_REPOSITORY_PORT,
+  ICrmRepositoryPort,
+} from '../../domain/ports/crm-repository.port';
+import {
+  ILeadAnalyzerPort,
+  LEAD_ANALYZER_PORT,
+} from '../../domain/ports/lead-analyzer.port';
 import { LeadEntity } from '../../domain/entities/lead.entity';
 import { InstagramMessageEntity } from '../../domain/entities/instagram-message.entity';
 
@@ -32,7 +38,11 @@ export class ProcessInstagramWebhookUseCase {
         }
 
         // 2. Save the Inbound Message
-        const message = InstagramMessageEntity.createInbound(lead.id, senderId, text);
+        const message = InstagramMessageEntity.createInbound(
+          lead.id,
+          senderId,
+          text,
+        );
         await this.crmRepository.saveMessage(message);
 
         // 3. Analyze Intent with LLM (or mock for now)
@@ -43,7 +53,9 @@ export class ProcessInstagramWebhookUseCase {
         lead.updateScore(analysis.score);
         // Note: 'HOT' isn't explicitly in the type right now, it's NEW/CONTACTED/WARM/COLD. We'll map HOT -> WARM or expand type in entity.
         // Assuming the analyzer returns valid status types.
-        lead.updateStatus(analysis.status === 'HOT' as any ? 'WARM' : analysis.status);
+        lead.updateStatus(
+          analysis.status === ('HOT' as any) ? 'WARM' : analysis.status,
+        );
         lead.aiSummary = analysis.summary;
 
         // 5. Save updated lead
