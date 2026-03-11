@@ -45,3 +45,29 @@ model InstagramMessage {
   @@index([leadId])
   @@index([timestamp])
 }
+
+model TelegramInteraction {
+  id        String   @id @default(uuid())
+  chatId    String   @db.VarChar(255)
+  command   String   @db.VarChar(255)
+  payload   String?  @db.Text
+  status    String   @default("RECEIVED") @db.VarChar(50) // RECEIVED, PROCESSING, COMPLETED, FAILED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([chatId])
+}
+
+model ContentDraft {
+  id        String   @id @default(uuid())
+  topic     String   @db.VarChar(255)
+  content   String   @db.Text
+  prompt    String?  @db.Text
+  imageUrl  String?  @db.Text
+  status    String   @default("PENDING_REVIEW") @db.VarChar(50) // PENDING_REVIEW, APPROVED, PUBLISHED
+  platform  String   @default("INSTAGRAM") @db.VarChar(50)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+}
