@@ -6,6 +6,8 @@ import { PrismaCrmAdapter } from './infrastructure/adapters/prisma-crm.adapter';
 import { LEAD_ANALYZER_PORT } from './domain/ports/lead-analyzer.port';
 import { OpenAiAnalyzerAdapter } from './infrastructure/adapters/openai.adapter';
 import { PrismaService } from './infrastructure/adapters/prisma.service';
+import { INSTAGRAM_API_PORT } from './domain/ports/instagram-api.port';
+import { MetaGraphApiAdapter } from './infrastructure/adapters/meta-graph-api.adapter';
 
 @Module({
   controllers: [InstagramWebhookController],
@@ -19,6 +21,10 @@ import { PrismaService } from './infrastructure/adapters/prisma.service';
     {
       provide: LEAD_ANALYZER_PORT,
       useClass: OpenAiAnalyzerAdapter,
+    },
+    {
+      provide: INSTAGRAM_API_PORT,
+      useClass: MetaGraphApiAdapter,
     },
   ],
 })

@@ -33,7 +33,7 @@ export class InstagramWebhookController {
     @Query('hub.mode') mode: string,
     @Query('hub.verify_token') token: string,
     @Query('hub.challenge') challenge: string,
-    @Res() res: Response, 
+    @Res() res: Response,
   ) {
     const VERIFY_TOKEN = 'omni_agents_super_secret_token_123'; // Debes poner esto mismo en el portal de Meta
 
@@ -53,6 +53,9 @@ export class InstagramWebhookController {
   async handleWebhook(
     @Body() payload: InstagramWebhookPayloadDto,
   ): Promise<string> {
+    console.log('\n--- 📥 NUEVO WEBHOOK RECIBIDO DE META ---');
+    console.log(JSON.stringify(payload, null, 2));
+
     if (payload.object === 'instagram') {
       await this.processWebhookUseCase.execute(payload);
       return 'EVENT_RECEIVED';

@@ -10,6 +10,10 @@ import {
 } from '../../domain/ports/lead-analyzer.port';
 import { LeadEntity } from '../../domain/entities/lead.entity';
 import { InstagramMessageEntity } from '../../domain/entities/instagram-message.entity';
+import {
+  INSTAGRAM_API_PORT,
+  InstagramApiPort,
+} from '../../domain/ports/instagram-api.port';
 
 @Injectable()
 export class ProcessInstagramWebhookUseCase {
@@ -18,6 +22,8 @@ export class ProcessInstagramWebhookUseCase {
     private readonly crmRepository: ICrmRepositoryPort,
     @Inject(LEAD_ANALYZER_PORT)
     private readonly leadAnalyzer: ILeadAnalyzerPort,
+    @Inject(INSTAGRAM_API_PORT)
+    private readonly instagramApi: InstagramApiPort,
   ) {}
 
   async execute(payload: InstagramWebhookPayloadDto): Promise<void> {
@@ -60,6 +66,9 @@ export class ProcessInstagramWebhookUseCase {
 
         // 5. Save updated lead
         await this.crmRepository.saveLead(lead);
+
+        // 6. Send Reply to User via Instagram API
+        await this.instagramApi.sendMessage(senderId, analysis.summary);
       }
     }
   }
