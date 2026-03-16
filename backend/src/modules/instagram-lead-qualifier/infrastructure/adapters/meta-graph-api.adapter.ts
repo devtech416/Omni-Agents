@@ -36,7 +36,7 @@ export class MetaGraphApiAdapter implements InstagramApiPort {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = (await response.json()) as unknown;
         this.logger.error(
           `Failed to send message to Instagram API: ${JSON.stringify(errorData)}`,
         );

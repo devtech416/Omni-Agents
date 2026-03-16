@@ -1,0 +1,78 @@
+<!-- src/app/features/content-studio/components/content-card/content-card.component.html -->
+<div class="bg-white dark:bg-neutral-dark border border-slate-200 dark:border-border-dark rounded-xl overflow-hidden group hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-xl relative"
+     [class.opacity-50]="isActionLoading">
+  
+  <!-- Saving Indicator Overlay (Optional subtle feedback) -->
+  <div *ngIf="isSaving" class="absolute top-2 right-2 z-10 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-sm animate-pulse flex items-center gap-1">
+    <span class="size-1.5 bg-green-400 rounded-full"></span> Guardando...
+  </div>
+  
+  <!-- Image Header -->
+  <div class="relative bg-slate-100 dark:bg-[#1a1a1a] min-h-[200px] overflow-hidden">
+    <img *ngIf="draft.imageUrl; else placeholderImage" 
+         [src]="draft.imageUrl" 
+         alt="AI generated visual"
+         class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500">
+         
+    <ng-template #placeholderImage>
+      <div class="w-full h-[300px] flex items-center justify-center text-slate-400 dark:text-slate-600">
+        <span class="material-symbols-outlined text-4xl">imagesmode</span>
+      </div>
+    </ng-template>
+
+    <div class="absolute top-3 left-3 flex gap-2">
+      <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+        AI VISUAL
+      </span>
+      <span *ngIf="draft.status === 'APPROVED'" class="bg-primary/90 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+        APROBADO
+      </span>
+    </div>
+
+    <!-- Download Overlay Button -->
+    <div *ngIf="draft.imageUrl" class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <button (click)="downloadImage()" 
+              title="Descargar imagen"
+              class="size-8 rounded-full bg-black/60 backdrop-blur-md hover:bg-black/80 text-white flex items-center justify-center transition-colors">
+        <span class="material-symbols-outlined text-[18px]">download</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Content / Caption Area -->
+  <div class="p-4 space-y-3">
+    <!-- Embedded Textarea with Auto-Grow behavior and focus ring -->
+    <div class="relative rounded -mx-2 px-2 py-1 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 focus-within:bg-slate-50 dark:focus-within:bg-white/5 focus-within:ring-1 focus-within:ring-primary/50">
+      <textarea 
+        [ngModel]="localContent"
+        (ngModelChange)="onContentChange($event)"
+        class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none min-h-[60px] max-h-[120px]" 
+        placeholder="Escribe el pie de foto para Instagram..."></textarea>
+    </div>
+
+    <!-- Meta & Actions Footer -->
+    <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-border-dark">
+      <span *ngIf="draft.folder || draft.category" 
+            class="px-2 py-1 bg-slate-100 dark:bg-white/5 rounded text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate max-w-[100px]">
+        #{{ draft.folder || draft.category }}
+      </span>
+      <span *ngIf="!draft.folder && !draft.category" class="text-xs text-slate-400 italic">Sin asignar</span>
+      
+      <div class="flex items-center gap-2">
+        <button (click)="reject()" 
+                [disabled]="isActionLoading"
+                class="p-2 text-slate-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 disabled:opacity-50">
+          <span class="material-symbols-outlined text-[20px]">delete</span>
+        </button>
+        
+        <button *ngIf="draft.status === 'PENDING_REVIEW'"
+                (click)="approve()" 
+                [disabled]="isActionLoading"
+                class="flex items-center gap-1.5 bg-primary/10 hover:bg-primary text-primary hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all disabled:opacity-50">
+          <span class="material-symbols-outlined text-[18px]">check_circle</span>
+          Aprobar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

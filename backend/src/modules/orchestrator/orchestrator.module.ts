@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from 'prisma';
+import { PrismaService } from '../instagram-lead-qualifier/infrastructure/adapters/prisma.service';
 import { TelegramAdapter } from './infrastructure/adapters/telegram.adapter';
 import { TelegramInteractionRepository } from './infrastructure/adapters/telegram-interaction.repository';
 import { ProcessTelegramCommandUseCase } from './application/use-cases/process-telegram-command.use-case';
 import { ORCHESTRATOR_REPOSITORY } from './domain/orchestrator.repository';
+import { ContentCreatorModule } from '../content-creator/content-creator.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [ContentCreatorModule],
   providers: [
+    PrismaService,
     TelegramAdapter,
     {
       provide: ORCHESTRATOR_REPOSITORY,

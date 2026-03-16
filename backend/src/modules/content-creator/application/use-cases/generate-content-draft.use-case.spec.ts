@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { GenerateContentDraftUseCase } from './generate-content-draft.use-case';
 import { AiGeneratorPort } from '../../domain/ports/ai-generator.port';
 import { ImageGeneratorPort } from '../../domain/ports/image-generator.port';
@@ -6,9 +5,10 @@ import { ContentDraftRepository } from '../../domain/ports/content-draft.reposit
 
 describe('GenerateContentDraftUseCase', () => {
   let useCase: GenerateContentDraftUseCase;
-  let mockAiGenerator: jest.Mocked<AiGeneratorPort>;
-  let mockImageGenerator: jest.Mocked<ImageGeneratorPort>;
-  let mockRepository: jest.Mocked<ContentDraftRepository>;
+  /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
+  let mockAiGenerator: any;
+  let mockImageGenerator: any;
+  let mockRepository: any;
 
   beforeEach(() => {
     mockAiGenerator = {
@@ -25,7 +25,7 @@ describe('GenerateContentDraftUseCase', () => {
     };
 
     mockRepository = {
-      saveDraft: jest.fn().mockImplementation((draft) =>
+      saveDraft: jest.fn().mockImplementation((draft: any) =>
         Promise.resolve({
           id: '123',
           ...draft,
@@ -34,9 +34,9 @@ describe('GenerateContentDraftUseCase', () => {
     };
 
     useCase = new GenerateContentDraftUseCase(
-      mockAiGenerator,
-      mockImageGenerator,
-      mockRepository,
+      mockAiGenerator as unknown as AiGeneratorPort,
+      mockImageGenerator as unknown as ImageGeneratorPort,
+      mockRepository as unknown as ContentDraftRepository,
     );
   });
 
@@ -45,7 +45,10 @@ describe('GenerateContentDraftUseCase', () => {
 
     const result = await useCase.execute(topic);
 
-    expect(mockAiGenerator.generatePostContent).toHaveBeenCalledWith(topic);
+    expect(mockAiGenerator.generatePostContent).toHaveBeenCalledWith(
+      topic,
+      undefined,
+    );
     expect(mockImageGenerator.generateImage).toHaveBeenCalledWith(
       'A futuristic clinic with AI doctors',
     );

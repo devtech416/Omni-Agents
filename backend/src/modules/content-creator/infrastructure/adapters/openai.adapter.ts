@@ -32,7 +32,7 @@ export class OpenAiAdapter implements ImageGeneratorPort {
       });
 
       const imageUrl = response.data?.[0]?.url;
-      
+
       if (!imageUrl) {
         throw new Error('OpenAI returned an empty image URL.');
       }

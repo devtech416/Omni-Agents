@@ -1,0 +1,48 @@
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +19ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInstagramLeadQualifierModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mContentCreatorModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mOrchestratorModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +8ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +6ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInstagramWebhookController {/api/webhooks/instagram}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/webhooks/instagram, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/webhooks/instagram, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/webhooks/instagram/leads, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/webhooks/instagram/leads/:id, DELETE} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mContentDraftsController {/api/content-drafts}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/content-drafts/generate, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/content-drafts, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/content-drafts/approved, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/content-drafts/by-folder/:folderName, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/content-drafts/:id/approve, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/content-drafts/:id/reject, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/content-drafts/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[TelegramAdapter] [39m[32mTelegram Bot Polling started[39m
+[32m[Nest] 91622  - [39m03/15/2026, 12:17:16 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +65ms[39m
+[31m[Nest] 91622  - [39m03/15/2026, 12:17:19 PM [31m  ERROR[39m [38;5;3m[GeminiAdapter] [39m[31mError generating content with Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent: [404 Not Found] models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.[39m
+[31m[Nest] 91622  - [39m03/15/2026, 12:17:19 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mError: Fallo al generar contenido con IA.
+    at GeminiAdapter.generatePostContent [90m(/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/[39msrc/modules/content-creator/infrastructure/adapters/gemini.adapter.ts:110:13[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+    at async GenerateContentDraftUseCase.execute [90m(/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/[39msrc/modules/content-creator/application/use-cases/generate-content-draft.use-case.ts:34:23[90m)[39m
+    at async [90m/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/[39mnode_modules/[4m@nestjs[24m/core/router/router-execution-context.js:46:28
+    at async [90m/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/[39mnode_modules/[4m@nestjs[24m/core/router/router-proxy.js:9:17
+/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/node_modules/telegraf/lib/core/network/client.js:315
+            throw new error_1.default(data, { method, payload });
+                  ^
+TelegramError: 409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+    at Telegram.callApi (/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/node_modules/telegraf/lib/core/network/client.js:315:19)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Polling.[Symbol.asyncIterator] (/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/node_modules/telegraf/lib/core/network/polling.js:30:33)
+    at async Polling.loop (/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/node_modules/telegraf/lib/core/network/polling.js:73:30)
+    at async Telegraf.launch (/Users/domoblock/Documents/Proycts-dev/Omni-Agents/backend/node_modules/telegraf/lib/telegraf.js:194:13) {
+  response: {
+    ok: false,
+    error_code: 409,
+    description: 'Conflict: terminated by other getUpdates request; make sure that only one bot instance is running'
+  },
+  on: {
+    method: 'getUpdates',
+    payload: { timeout: 50, offset: 0, allowed_updates: [] }
+  }
+}

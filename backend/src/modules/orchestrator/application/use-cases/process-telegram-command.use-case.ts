@@ -1,5 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { OrchestratorRepository, ORCHESTRATOR_REPOSITORY } from '../../domain/orchestrator.repository';
+import {
+  OrchestratorRepository,
+  ORCHESTRATOR_REPOSITORY,
+} from '../../domain/orchestrator.repository';
 import { TelegramCommand } from '../../domain/telegram-command';
 import { GenerateContentDraftUseCase } from '../../../content-creator/application/use-cases/generate-content-draft.use-case';
 
@@ -13,7 +16,11 @@ export class ProcessTelegramCommandUseCase {
     private readonly generateContentDraftUseCase: GenerateContentDraftUseCase,
   ) {}
 
-  async execute(chatId: string, rawText: string): Promise<void> {
+  async execute(
+    chatId: string,
+    rawText: string,
+    referenceImageUrl?: string,
+  ): Promise<void> {
     if (chatId !== this.adminChatId) {
       throw new Error('Unauthorized chat ID');
     }
@@ -33,15 +40,27 @@ export class ProcessTelegramCommandUseCase {
 
     if (command.getCommand() === '/createpost') {
       try {
-        await this.generateContentDraftUseCase.execute(command.getPayload());
-        await this.orchestratorRepository.updateInteractionStatus(interaction.id, 'COMPLETED');
+        await this.generateContentDraftUseCase.execute(
+          command.getPayload(),
+          referenceImageUrl,
+        );
+        await this.orchestratorRepository.updateInteractionStatus(
+          interaction.id,
+          'COMPLETED',
+        );
       } catch (error) {
-        await this.orchestratorRepository.updateInteractionStatus(interaction.id, 'FAILED');
+        await this.orchestratorRepository.updateInteractionStatus(
+          interaction.id,
+          'FAILED',
+        );
         throw error;
       }
     } else {
-       // Other commands placeholder
-       await this.orchestratorRepository.updateInteractionStatus(interaction.id, 'COMPLETED');
+      // Other commands placeholder
+      await this.orchestratorRepository.updateInteractionStatus(
+        interaction.id,
+        'COMPLETED',
+      );
     }
   }
 }

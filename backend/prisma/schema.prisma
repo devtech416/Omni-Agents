@@ -60,14 +60,17 @@ model TelegramInteraction {
 
 model ContentDraft {
   id        String   @id @default(uuid())
-  topic     String   @db.VarChar(255)
+  topic     String   @db.Text
   content   String   @db.Text
   prompt    String?  @db.Text
   imageUrl  String?  @db.Text
-  status    String   @default("PENDING_REVIEW") @db.VarChar(50) // PENDING_REVIEW, APPROVED, PUBLISHED
+  status    String   @default("PENDING_REVIEW") @db.VarChar(50) // PENDING_REVIEW, APPROVED, PUBLISHED, REJECTED
   platform  String   @default("INSTAGRAM") @db.VarChar(50)
+  folder    String?  @db.VarChar(255) // Optional folder name e.g "Diaram", "Educational", "Meme"
+  category  String?  @db.VarChar(255) // Optional category for further classification
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([status])
+  @@index([folder])
 }

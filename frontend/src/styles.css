@@ -3,10 +3,22 @@
 @tailwind utilities;
 
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Public Sans', sans-serif;
 }
 
+.glass-morphism {
+  background: rgba(23, 23, 23, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.blue-glow {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}

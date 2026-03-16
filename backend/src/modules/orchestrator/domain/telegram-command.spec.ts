@@ -6,7 +6,9 @@ describe('TelegramCommand (Value Object)', () => {
     const command = new TelegramCommand(rawText);
 
     expect(command.getCommand()).toBe('/createpost');
-    expect(command.getPayload()).toBe('Beneficios de la Inteligencia Artificial');
+    expect(command.getPayload()).toBe(
+      'Beneficios de la Inteligencia Artificial',
+    );
   });
 
   it('should handle commands without payload', () => {

@@ -11,6 +11,11 @@ export interface TelegramInteraction {
 export const ORCHESTRATOR_REPOSITORY = Symbol('ORCHESTRATOR_REPOSITORY');
 
 export interface OrchestratorRepository {
-  saveInteraction(interaction: Omit<TelegramInteraction, 'id' | 'createdAt' | 'updatedAt'>): Promise<TelegramInteraction>;
-  updateInteractionStatus(id: string, status: TelegramInteraction['status']): Promise<void>;
+  saveInteraction(
+    interaction: Omit<TelegramInteraction, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<TelegramInteraction>;
+  updateInteractionStatus(
+    id: string,
+    status: TelegramInteraction['status'],
+  ): Promise<void>;
 }

@@ -1,3 +1,9 @@
+try {
+  process.loadEnvFile();
+} catch {
+  // Ignorar si no existe el archivo .env, por ejemplo en producción
+}
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 

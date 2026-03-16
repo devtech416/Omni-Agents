@@ -4,8 +4,10 @@ export interface ContentDraftEntity {
   content: string;
   prompt?: string;
   imageUrl?: string;
-  status: 'PENDING_REVIEW' | 'APPROVED' | 'PUBLISHED';
+  status: 'PENDING_REVIEW' | 'APPROVED' | 'PUBLISHED' | 'REJECTED';
   platform: string;
+  folder?: string;
+  category?: string;
 }
 
 export const CONTENT_DRAFT_REPOSITORY = Symbol('CONTENT_DRAFT_REPOSITORY');

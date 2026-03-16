@@ -10,7 +10,7 @@ export class TelegramCommand {
     }
 
     const firstSpaceIndex = rawText.indexOf(' ');
-    
+
     if (firstSpaceIndex === -1) {
       this.command = rawText;
       this.payload = '';

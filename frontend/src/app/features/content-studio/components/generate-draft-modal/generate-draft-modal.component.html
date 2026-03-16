@@ -1,0 +1,194 @@
+<!-- src/app/features/content-studio/components/generate-draft-modal/generate-draft-modal.component.html -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-all duration-300">
+  
+  <!-- Modal Container -->
+  <div class="relative w-full max-w-2xl glass-morphism rounded-xl shadow-2xl overflow-hidden border border-border-dark bg-surface-dark/90 backdrop-blur-xl animate-in zoom-in-95 duration-200" [class.opacity-50]="isGenerating" [class.pointer-events-none]="isGenerating">
+    
+    <!-- Header -->
+    <header class="flex items-center justify-between px-6 py-4 border-b border-border-dark bg-surface-dark/50">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary">
+          <span class="material-symbols-outlined text-xl">temp_preferences_custom</span>
+        </div>
+        <div>
+          <h2 class="text-slate-100 text-sm font-semibold tracking-tight">Visual AI Studio</h2>
+          <p class="text-slate-400 text-[10px] uppercase tracking-widest">Generative Engine v4.0</p>
+        </div>
+      </div>
+      <button (click)="cancel()" class="p-2 hover:bg-white/5 rounded-lg transition-colors text-slate-400 hover:text-slate-100">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </header>
+
+    <!-- Modal Body -->
+    <div class="p-6 space-y-6">
+      <!-- Title, Intro & Engine Selector -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <h1 class="text-2xl font-bold text-slate-100 tracking-tight">Escena Creativa</h1>
+          <p class="text-slate-400 text-sm">Elige el motor y genera tu contenido Premium.</p>
+        </div>
+        
+        <!-- Engine Toggle -->
+        <div class="flex items-center gap-1 p-1 bg-black/40 border border-border-dark rounded-lg w-fit">
+          <button (click)="selectedEngine = 'CANVA'"
+                  [ngClass]="selectedEngine === 'CANVA' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-slate-200'"
+                  class="flex items-center gap-2 px-3 py-1.5 rounded-md font-bold text-[13px] transition-all duration-300">
+            <span class="material-symbols-outlined text-[16px]">brush</span>
+            Canva (Rápido)
+          </button>
+          <button (click)="selectedEngine = 'DALL-E'"
+                  [ngClass]="selectedEngine === 'DALL-E' ? 'bg-accent-blue text-white shadow-lg shadow-accent-blue/20' : 'text-slate-400 hover:text-slate-200'"
+                  class="flex items-center gap-2 px-3 py-1.5 rounded-md font-bold text-[13px] transition-all duration-300">
+            <span class="material-symbols-outlined text-[16px]">draw</span>
+            DALL-E 3 (Alta Calidad)
+          </button>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="relative group">
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-accent-blue/20 rounded-xl blur opacity-30 group-focus-within:opacity-100 transition duration-500"></div>
+        <div class="relative flex flex-col bg-surface-dark rounded-xl border border-border-dark overflow-hidden">
+          <div class="flex items-center gap-3 px-4 pt-4">
+            <div class="w-8 h-8 rounded-full border border-border-dark flex items-center justify-center overflow-hidden bg-slate-800">
+              <span class="material-symbols-outlined text-slate-400 text-lg">person</span>
+            </div>
+            <span class="text-xs font-medium text-slate-500">Prompt Principal <span class="text-red-500">*</span></span>
+          </div>
+          <textarea 
+            [(ngModel)]="topic"
+            class="w-full min-h-[160px] bg-transparent border-0 focus:ring-0 text-slate-100 placeholder:text-slate-600 p-4 text-base resize-none leading-relaxed outline-none" 
+            placeholder="Describe la escena hiperrealista que deseas crear... Ej: 'Un astronauta de cristal caminando por un desierto de arena roja neón, iluminación volumétrica, 8k, estilo cyberpunk'"></textarea>
+          
+          <!-- Toolbelt -->
+          <div class="flex items-center justify-between p-3 border-t border-border-dark bg-black/20">
+            <div class="flex items-center gap-1">
+              <button class="p-2 text-slate-500 hover:text-primary transition-colors hover:bg-white/5 rounded-lg" title="Estilos">
+                <span class="material-symbols-outlined text-[20px]">palette</span>
+              </button>
+              <button class="p-2 text-slate-500 hover:text-primary transition-colors hover:bg-white/5 rounded-lg" title="Cámara">
+                <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+              </button>
+              <button class="p-2 text-slate-500 hover:text-primary transition-colors hover:bg-white/5 rounded-lg" title="Iluminación">
+                <span class="material-symbols-outlined text-[20px]">wb_sunny</span>
+              </button>
+              <div class="w-px h-4 bg-border-dark mx-1"></div>
+              <button class="p-2 text-slate-500 hover:text-primary transition-colors hover:bg-white/5 rounded-lg" title="Mejorar Prompt">
+                <span class="material-symbols-outlined text-[20px]">magic_button</span>
+              </button>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-mono text-slate-600">Tokens: {{topic.length || 0}}/500</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Options Accordion -->
+      <details class="group border border-border-dark rounded-xl bg-surface-dark/30">
+        <summary class="flex items-center justify-between p-4 cursor-pointer list-none select-none">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-slate-500 group-open:text-primary transition-colors">settings_input_component</span>
+            <span class="text-sm font-medium text-slate-300">Configuración Avanzada</span>
+          </div>
+          <span class="material-symbols-outlined text-slate-500 transition-transform duration-300 group-open:rotate-180">expand_more</span>
+        </summary>
+        
+        <div class="px-4 pb-5 pt-2 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">URL de Referencia (Img2Img)</label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 text-sm">link</span>
+                <input [(ngModel)]="referenceImageUrl" class="w-full bg-black/40 border border-border-dark rounded-lg pl-9 pr-3 py-2 text-sm text-slate-300 focus:border-primary focus:ring-1 focus:ring-primary/20 placeholder:text-slate-700 outline-none transition-all" placeholder="https://unsplash.com/photo..." type="text"/>
+              </div>
+            </div>
+            
+            <div class="space-y-2">
+              <label class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Carpeta de Destino</label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 text-sm">folder_open</span>
+                <select [(ngModel)]="selectedFolder" class="w-full bg-black/40 border border-border-dark rounded-lg pl-9 pr-3 py-2 text-sm text-slate-300 focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all appearance-none cursor-pointer">
+                  <option value="">Raíz (Ninguna)</option>
+                  <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 text-sm pointer-events-none">arrow_drop_down</span>
+              </div>
+            </div>
+            
+            <div class="space-y-2 md:col-span-2">
+              <label class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Categoría / Etiqueta</label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 text-sm">label</span>
+                <input [(ngModel)]="newCategory" class="w-full bg-black/40 border border-border-dark rounded-lg pl-9 pr-3 py-2 text-sm text-slate-300 focus:border-primary focus:ring-1 focus:ring-primary/20 placeholder:text-slate-700 outline-none transition-all" placeholder="Ej: Tutorial, IA, Tendencia..." type="text"/>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-4 pt-2">
+            <div class="flex-1 h-px bg-border-dark"></div>
+            <span class="text-[10px] text-slate-600 uppercase font-bold tracking-widest">Parámetros de Calidad</span>
+            <div class="flex-1 h-px bg-border-dark"></div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 bg-primary/10 border border-primary/20 rounded text-[10px] font-bold text-primary cursor-default">Upscale 4x</span>
+            <span class="px-2 py-1 bg-slate-800 border border-border-dark rounded text-[10px] font-bold text-slate-400 hover:border-slate-600 cursor-pointer transition-colors">Denoising: 0.75</span>
+            <span class="px-2 py-1 bg-slate-800 border border-border-dark rounded text-[10px] font-bold text-slate-400 hover:border-slate-600 cursor-pointer transition-colors">Sampler: Euler a</span>
+          </div>
+        </div>
+      </details>
+      
+      <!-- Error Message -->
+      <div *ngIf="errorMsg" class="p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-lg flex items-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">error</span>
+        {{ errorMsg }}
+      </div>
+
+    </div>
+
+    <!-- Footer / CTA -->
+    <footer class="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 border-t border-border-dark bg-black/40">
+      <div class="flex items-center gap-4">
+        <div class="flex -space-x-2">
+          <div class="w-6 h-6 rounded-full border-2 border-surface-dark bg-slate-700 flex items-center justify-center">
+            <span class="text-[8px] text-white">AI</span>
+          </div>
+          <div class="w-6 h-6 rounded-full border-2 border-surface-dark bg-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-[10px] text-white">flash_on</span>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500 max-w-[140px] leading-tight flex-1">Créditos restantes: <span class="text-slate-200 font-bold">1,240</span></p>
+      </div>
+      
+      <div class="flex items-center gap-3 w-full sm:w-auto">
+        <button (click)="cancel()" class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-400 hover:text-slate-100 hover:bg-white/5 transition-all">
+          Cancelar
+        </button>
+        <button (click)="generate()" [disabled]="isGenerating" class="flex-1 sm:flex-none relative group blue-glow disabled:opacity-50 disabled:pointer-events-none disabled:grayscale">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-accent-blue to-primary rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+          <div class="relative flex items-center justify-center gap-2 px-8 py-3 bg-slate-900 hover:bg-black rounded-lg text-sm font-bold text-white transition-all">
+            <span class="material-symbols-outlined text-lg">auto_fix_high</span>
+            <span>Generar Magia</span>
+          </div>
+        </button>
+      </div>
+    </footer>
+    
+    <!-- Loading Overlay for API Generation -->
+    <div *ngIf="isGenerating" class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-surface-dark/80 backdrop-blur-sm rounded-xl">
+      <div class="relative size-16 mb-4">
+        <svg class="animate-spin w-full h-full text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+      <h4 class="text-base font-bold text-slate-100 mb-1 animate-pulse">Generando Magia Visual</h4>
+      <p class="text-sm text-slate-400 text-center max-w-xs">Analizando el prompt y renderizando la imagen en alta calidad. Esto puede tomar unos segundos...</p>
+    </div>
+
+    <!-- Bottom Progress Accent -->
+    <div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
+  </div>
+</div>
+

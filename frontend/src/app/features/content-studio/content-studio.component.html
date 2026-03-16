@@ -1,0 +1,113 @@
+<!-- src/app/features/content-studio/content-studio.component.html -->
+<div class="flex min-h-screen bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors">
+  
+  <!-- Sidebar -->
+  <aside class="w-64 border-r border-slate-200 dark:border-border-dark flex flex-col fixed h-full bg-white dark:bg-background-dark z-40">
+    <div class="p-6 flex items-center gap-3">
+      <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+        <span class="material-symbols-outlined font-bold">auto_awesome</span>
+      </div>
+      <h1 class="text-lg font-bold tracking-tight">Content Studio</h1>
+    </div>
+    
+    <nav class="flex-1 px-3 space-y-1">
+      <a (click)="loadPendingDrafts()" 
+         [ngClass]="currentView === 'PENDING' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-dark'"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg font-medium group cursor-pointer transition-colors">
+        <span class="material-symbols-outlined text-[20px]">layers</span>
+        <span class="text-sm">Borradores Visibles</span>
+      </a>
+      
+      <a (click)="loadApprovedDrafts()" 
+         [ngClass]="currentView === 'APPROVED' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-neutral-dark'"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg font-medium cursor-pointer transition-colors">
+        <span class="material-symbols-outlined text-[20px]">send</span>
+        <span class="text-sm">Publicados</span>
+      </a>
+      
+      <div class="pt-6">
+        <div class="flex items-center justify-between px-3 mb-2">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Proyectos</span>
+          <button class="text-slate-400 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+          </button>
+        </div>
+        
+        <details class="group" open>
+          <summary class="flex items-center justify-between px-3 py-2 cursor-pointer rounded-lg hover:bg-slate-100 dark:hover:bg-neutral-dark text-slate-500 dark:text-slate-400 list-none">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px]">folder</span>
+              <span class="text-sm font-medium">Carpetas</span>
+            </div>
+            <span class="material-symbols-outlined text-[18px] group-open:rotate-180 transition-transform">expand_more</span>
+          </summary>
+          <div class="ml-9 mt-1 space-y-1">
+            <a *ngFor="let cat of categories" 
+               (click)="loadFolder(cat)"
+               [ngClass]="currentView === 'FOLDER' && currentFolder === cat ? 'text-primary font-medium' : 'text-slate-500 dark:text-slate-400'"
+               class="block py-1.5 text-sm hover:text-primary cursor-pointer transition-colors">
+              {{ cat }}
+            </a>
+          </div>
+        </details>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 ml-64 p-8 relative">
+    
+    <header class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-2xl font-bold dark:text-white">
+          <ng-container *ngIf="currentView === 'PENDING'">Borradores Visibles</ng-container>
+          <ng-container *ngIf="currentView === 'APPROVED'">Post Publicados</ng-container>
+          <ng-container *ngIf="currentView === 'FOLDER'">Carpeta: {{ currentFolder }}</ng-container>
+        </h2>
+        <p class="text-slate-500 dark:text-slate-400 text-sm">Gestiona y aprueba el contenido generado por IA</p>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <!-- New Project Button - CTA Moved to Top Right -->
+        <button (click)="openGenerateModal()" 
+                class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-lg shadow-primary/20">
+          <span class="material-symbols-outlined text-[18px]">magic_button</span>
+          Nueva Imagen IA
+        </button>
+        
+        <div class="size-10 rounded-full bg-slate-200 dark:bg-neutral-dark flex items-center justify-center border border-slate-300 dark:border-border-dark overflow-hidden">
+          <img class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Admin&background=random" alt="User avatar">
+        </div>
+      </div>
+    </header>
+
+    <!-- Empty State -->
+    <div *ngIf="drafts.length === 0" class="flex flex-col items-center justify-center py-20 text-center">
+      <div class="size-16 bg-slate-100 dark:bg-neutral-dark rounded-full flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-3xl text-slate-400">imagesmode</span>
+      </div>
+      <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-1">No hay contenido aquí</h3>
+      <p class="text-slate-500 dark:text-slate-400 max-w-sm">Aún no hay borradores en esta sección. Genera magia pulsando el botón superior.</p>
+    </div>
+
+    <!-- Masonry Grid -->
+    <div *ngIf="drafts.length > 0" class="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-6">
+      <div *ngFor="let draft of drafts" class="break-inside-avoid">
+        <app-content-card 
+          [draft]="draft" 
+          (removed)="onDraftRemoved($event)">
+        </app-content-card>
+      </div>
+    </div>
+    
+  </main>
+  
+  <!-- Generate Modal -->
+  <app-generate-draft-modal 
+    *ngIf="isModalOpen" 
+    [categories]="categories"
+    (closeModal)="closeGenerateModal()"
+    (generated)="onDraftGenerated($event)">
+  </app-generate-draft-modal>
+
+</div>

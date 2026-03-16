@@ -1,13 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'prisma';
-import { OrchestratorRepository, TelegramInteraction } from '../domain/orchestrator.repository';
+import { PrismaService } from '../../../instagram-lead-qualifier/infrastructure/adapters/prisma.service';
+import {
+  OrchestratorRepository,
+  TelegramInteraction,
+} from '../../domain/orchestrator.repository';
 
 @Injectable()
 export class TelegramInteractionRepository implements OrchestratorRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async saveInteraction(interaction: Omit<TelegramInteraction, 'id' | 'createdAt' | 'updatedAt'>): Promise<TelegramInteraction> {
-    const saved = await this.prisma.telegramInteraction.create({
+  async saveInteraction(
+    interaction: Omit<TelegramInteraction, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<TelegramInteraction> {
+    const saved = await this.prisma.client.telegramInteraction.create({
       data: {
         chatId: interaction.chatId,
         command: interaction.command,
@@ -27,8 +32,11 @@ export class TelegramInteractionRepository implements OrchestratorRepository {
     };
   }
 
-  async updateInteractionStatus(id: string, status: TelegramInteraction['status']): Promise<void> {
-    await this.prisma.telegramInteraction.update({
+  async updateInteractionStatus(
+    id: string,
+    status: TelegramInteraction['status'],
+  ): Promise<void> {
+    await this.prisma.client.telegramInteraction.update({
       where: { id },
       data: { status },
     });
